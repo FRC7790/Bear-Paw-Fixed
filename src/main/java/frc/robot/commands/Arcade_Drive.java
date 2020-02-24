@@ -11,7 +11,7 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 //import frc.robot.subsystems.DriveTrain_Subsystem;
 //import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.DriveTrain_Subsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -19,14 +19,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 public class Arcade_Drive extends CommandBase {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-    private final DriveTrain_Subsystem m_subsystem;
+    private final DriveSubsystem m_subsystem;
 
     /**
      * Creates a new Arcade_Drive.
      *
      * @param subsystem The subsystem used by this command.
      */
-    public Arcade_Drive(DriveTrain_Subsystem subsystem) {
+    public Arcade_Drive(DriveSubsystem subsystem) {
         m_subsystem = subsystem;
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(subsystem);

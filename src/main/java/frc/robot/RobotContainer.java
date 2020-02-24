@@ -9,7 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-//import frc.robot.commands.Align_PID;
+import frc.robot.commands.Align_PID;
 import frc.robot.commands.Arcade_Drive;
 import frc.robot.commands.Climb_Down;
 import frc.robot.commands.Climb_Up;
@@ -20,20 +20,25 @@ import frc.robot.commands.Intake_Stop;
 import frc.robot.commands.Move_Hook;
 import frc.robot.commands.Piston_Intake_In;
 import frc.robot.commands.Piston_Intake_Out;
-import frc.robot.commands.Set_LED;
+//import frc.robot.commands.Set_LED;
 import frc.robot.commands.Shooter_Shoot_Button;
 //import frc.robot.commands.Shooter_Shoot_Joy;
 import frc.robot.commands.Stop_Climb;
 import frc.robot.commands.Stop_Shoot;
+import frc.robot.commands.Elevator_Up;
+import frc.robot.commands.Elevator_Down;
+import frc.robot.commands.Elevator_Stop;
 import frc.robot.subsystems.Climber_Subsystem;
 import frc.robot.subsystems.Compressor_Subsystem;
-import frc.robot.subsystems.DriveTrain_Subsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake_Subsystem;
-import frc.robot.subsystems.Limelight_Subsystem;
+//import frc.robot.subsystems.Limelight_Subsystem;
 import frc.robot.subsystems.NavXIMU_Subsystem;
 import frc.robot.subsystems.Shooter_Subsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.Elevator_Subsystem;
+import frc.robot.subsystems.PixyCam_Subsystem;
 
 import java.util.Arrays;
 
@@ -59,16 +64,18 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
 
     // Subsystems //
-    private final DriveTrain_Subsystem m_driveTrainSubsystem = new DriveTrain_Subsystem();
+    private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
     private final Climber_Subsystem m_climberSubsystem = new Climber_Subsystem();
     private final Shooter_Subsystem m_shooterSubsystem = new Shooter_Subsystem();
     private final Intake_Subsystem m_intakeSubsystem = new Intake_Subsystem();
-    private final Limelight_Subsystem n_limelightSubsystem = new Limelight_Subsystem();
+    //private final Limelight_Subsystem n_limelightSubsystem = new Limelight_Subsystem();
     private final Compressor_Subsystem p_compressorSubsystem = new Compressor_Subsystem();
+    private final Elevator_Subsystem m_elevatorSubsytem = new Elevator_Subsystem();
+    private final PixyCam_Subsystem n_pixyCam_Subsystem = new PixyCam_Subsystem();
     //private final Drivetrain m_drive = new Drivetrain();
 
     // Commands //
-    private final Arcade_Drive m_arcadeDriveCommand = new Arcade_Drive(m_driveTrainSubsystem);
+    private final Arcade_Drive m_arcadeDriveCommand = new Arcade_Drive(m_driveSubsystem);
     private final Move_Hook m_Move_Hook = new Move_Hook(m_climberSubsystem);
     private final Climb_Up m_climbUpCommand = new Climb_Up(m_climberSubsystem);
     private final Climb_Down m_climbDownCommand = new Climb_Down(m_climberSubsystem);
@@ -81,13 +88,16 @@ public class RobotContainer {
     private final Piston_Intake_Out p_Intake_Out = new Piston_Intake_Out(m_intakeSubsystem);
     private final Piston_Intake_In p_Intake_In = new Piston_Intake_In(m_intakeSubsystem);
     //private final Find_Target n_Find_Target = new Find_Target(n_limelightSubsystem, m_driveTrainSubsystem);
-    private final Set_LED n_Set_LED = new Set_LED(n_limelightSubsystem);
-    //private final Align_PID n_Align_PID = new Align_PID(m_driveTrainSubsystem, n_limelightSubsystem);
-    private final Compressor_Start p_Compressor_Start = new Compressor_Start(p_compressorSubsystem);
+    //private final Set_LED n_Set_LED = new Set_LED(n_limelightSubsystem);
 
+    private final Align_PID n_Align_PID = new Align_PID(m_driveSubsystem, n_pixyCam_Subsystem);
+    private final Compressor_Start p_Compressor_Start = new Compressor_Start(p_compressorSubsystem);
+    private final Elevator_Up m_Elevator_Up = new Elevator_Up(m_elevatorSubsytem);
+    private final Elevator_Down m_Elevator_Down = new Elevator_Down(m_elevatorSubsytem);
+    private final Elevator_Stop m_Elevator_Stop = new Elevator_Stop(m_elevatorSubsytem);
 
     // Commands for Autonomous Period //
-    private final Arcade_Drive m_autoCommand = new Arcade_Drive(m_driveTrainSubsystem);
+    private final Arcade_Drive m_autoCommand = new Arcade_Drive(m_driveSubsystem);
 
     // Controller Mappings //
 
@@ -125,13 +135,14 @@ public class RobotContainer {
         configureButtonBindings();
         
         // Default Command(s) //
-        m_driveTrainSubsystem.setDefaultCommand(m_arcadeDriveCommand);  // Defaults to Arcade Drive
+        m_driveSubsystem.setDefaultCommand(m_arcadeDriveCommand);  // Defaults to Arcade Drive
         m_climberSubsystem.setDefaultCommand(m_stopClimbCommand);       // Defaults to climber not running
         m_climberSubsystem.setDefaultCommand(m_Move_Hook);       // Defaults to climber not running
         m_shooterSubsystem.setDefaultCommand(m_Stop_Shoot);
         m_intakeSubsystem.setDefaultCommand(m_Intake_Stop);
         p_compressorSubsystem.setDefaultCommand(p_Compressor_Start);
-        n_limelightSubsystem.setDefaultCommand(n_Set_LED);
+        //n_limelightSubsystem.setDefaultCommand(n_Set_LED);
+        //m_elevatorSubsystem.setDefaultCommand(m_Elevator_Stop);
     }
 
     /**
@@ -144,17 +155,25 @@ public class RobotContainer {
         // j_stick_control_A.whenHeld(m_climbUpCommand);
         // j_stick_control_A.whenReleased(m_stopClimbCommand);
 
-        // j_stick_control_B.whenHeld(m_Intake);
-        // j_stick_control_B.whenReleased(m_Intake_Stop);
+        j_stick_driver_B.whenHeld(m_Intake);
+        j_stick_driver_B.whenReleased(m_Intake_Stop);
 
-        j_stick_control_X.whenPressed(p_Intake_Out);
-        j_stick_control_Y.whenPressed(p_Intake_In);
+        j_stick_driver_Back.whenPressed(p_Intake_Out);
+        j_stick_driver_Start.whenPressed(p_Intake_In);
 
         j_stick_driver_A.whenHeld(m_Shooter_Shoot_Button);
         j_stick_driver_A.whenReleased(m_Stop_Shoot);
 
-        //j_stick_driver_B.whenHeld(n_Align_PID);
-        j_stick_driver_B.whenReleased(n_Set_LED);
+        j_stick_driver_X.whenHeld(m_Elevator_Up);
+        j_stick_driver_X.whenReleased(m_Elevator_Stop);
+
+        j_stick_driver_Y.whenHeld(m_Elevator_Down);
+        j_stick_driver_Y.whenReleased(m_Elevator_Stop);
+        
+        
+
+        j_stick_driver_RB.whenHeld(n_Align_PID);
+        //j_stick_driver_B.whenReleased(n_Set_LED);
     }
 
     /**

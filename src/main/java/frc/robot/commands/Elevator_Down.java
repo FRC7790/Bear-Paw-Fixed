@@ -8,16 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Limelight_Subsystem;
+import frc.robot.subsystems.Elevator_Subsystem;
 
-public class Set_LED extends CommandBase {
-  private final Limelight_Subsystem n_subsystem;
+public class Elevator_Down extends CommandBase {
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  private final Elevator_Subsystem m_subsystem;
   /**
-   * Creates a new Set_LED.
+   * Creates a new Intake_Stop.
    */
-  public Set_LED(Limelight_Subsystem subsystem) {
-    n_subsystem = subsystem;
+  public Elevator_Down(Elevator_Subsystem subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_subsystem = subsystem;
+
     addRequirements(subsystem);
   }
 
@@ -29,7 +31,7 @@ public class Set_LED extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    n_subsystem.Set_LED(0);
+    m_subsystem.Elevator_Down();
   }
 
   // Called once the command ends or is interrupted.
