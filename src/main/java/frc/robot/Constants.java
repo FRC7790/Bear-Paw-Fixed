@@ -24,7 +24,7 @@ public final class Constants {
     public static final double kP = 0.05;
     public static final double kI = 0;
     public static final double kD = 0;
-    public static final double setPoint = 180;
+    public static final double setPoint = 0;
     public static final double setPercentTolerance = 0.01;
   }
 
@@ -44,12 +44,11 @@ public final class Constants {
     public static final int VICTORSPX_LEFT_DRIVE = 1;
     public static final int VICTORSPX_RIGHT_DRIVE = 0;
     public static final int VICTORSPX_COLOR_WHEEL = 2;
-    public static final int VICTORSPX_WINCH = 6;
+    public static final int VICTORSPX_WINCH = 4;
     public static final int VICTORSPX_HOOK_LIFT = 3;
-    public static final int VICTORSPX_ELEVATOR = 4;
     //public static final int VICTORSPX_SHOOT = 3;
     //public static final int VICTORSPX_SHOOT_2 = 4;
-    public static final int VICTORSPX_INTAKE = 5;//5
+    public static final int VICTORSPX_INTAKE = 6;//5
     //public static final int VICTORSPX_INTAKE_2 = 7;
 
     /* Double Solenoid */
